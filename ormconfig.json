@@ -3,7 +3,7 @@
   "host": "localhost",
   "port": 5432,
   "username": "postgres",
-  "password": "postgres",
+  "password": "example",
   "database": "exampledb",
   "synchronize": false,
   "migrationsRun": true,

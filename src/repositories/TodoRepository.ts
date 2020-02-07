@@ -14,7 +14,7 @@ export default class TodoRepository extends AbstractRepository<Todo> {
     public find(conditions?: FindConditions<Todo>): Promise<Todo[]> {
         return this.repository.find({
             cache: true,
-            relations: ['metadata'],
+            relations: ['author', 'metadata'],
             where: conditions
         }).then((todos) => {
             return todos.map((todo) => {
@@ -26,6 +26,8 @@ export default class TodoRepository extends AbstractRepository<Todo> {
 
     public findIncomplete(): Promise<Todo[]> {
         return this.repository.createQueryBuilder('todo')
+            .innerJoinAndSelect('todo.metadata', 'metadata')
+            .innerJoinAndSelect('todo.author', 'author')
             .where('todo."isComplete" = :value', {value: false})
             .cache(true)
             .getMany();
