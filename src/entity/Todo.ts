@@ -1,8 +1,19 @@
 import {Length, Validate} from 'class-validator';
-import {AfterInsert, Column, Entity, Index, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
+import {
+    AfterInsert,
+    Column,
+    Entity,
+    Index,
+    JoinColumn, JoinTable,
+    ManyToMany,
+    ManyToOne,
+    OneToOne,
+    PrimaryGeneratedColumn
+} from 'typeorm';
 import CapitalLetterValidator from '../validators/CapitalLetterValidator';
 import TodoMetadata from './TodoMetadata';
 import Author from './Author';
+import Category from './Category';
 
 @Entity()
 export class Todo {
@@ -29,6 +40,10 @@ export class Todo {
     @Index()
     @ManyToOne(() => Author, (author) => author.todos)
     public author: Author;
+
+    @ManyToMany(() => Category, category => category.todos)
+    @JoinTable()
+    public categories: Category[];
 
     @AfterInsert()
     public handleAfterInsert() {
